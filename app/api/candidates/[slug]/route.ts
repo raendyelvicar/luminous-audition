@@ -20,3 +20,42 @@ export async function GET(
 
   return Response.json(candidate);
 }
+export async function PUT(
+  request: Request,
+  { params }: { params: { slug: string } } // id tetap string
+) {
+  const { slug } = params;
+  const body = await request.json();
+  const { name, status, message } = body;
+
+  const candidate = await prisma.candidate.update({
+    where: { id: Number(slug) },
+    data: { name, status, message },
+  });
+
+  return Response.json(candidate);
+}
+
+export async function DELETE(
+  request: Request,
+  { params }: { params: Promise<{ slug: string }> } // <-- slug adalah promise
+) {
+  const { slug } = await params; // ✅ harus di-`await`
+
+  if (!slug) {
+    return new Response(JSON.stringify({ error: 'ID missing' }), {
+      status: 400,
+    });
+  }
+
+  try {
+    const response = await prisma.candidate.delete({
+      where: { id: Number(slug) },
+    });
+    return Response.json(response);
+  } catch (err) {
+    return new Response(JSON.stringify({ error: 'Delete failed' }), {
+      status: 500,
+    });
+  }
+}

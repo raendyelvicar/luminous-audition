@@ -1,4 +1,4 @@
-import { CandidateWithUrl } from '@/app/types/candidates';
+import { CandidateWithUrl } from '@/app/types/candidate';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();

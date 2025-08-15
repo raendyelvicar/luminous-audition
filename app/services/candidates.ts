@@ -30,3 +30,26 @@ export async function getCandidates() {
   if (!res.ok) throw new Error('Gagal mengambil data kandidat');
   return res.json();
 }
+
+export async function updateCandidate(
+  id: number,
+  data: { name: string; status: string; message?: string }
+) {
+  const res = await fetch(`/api/candidates/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+
+  if (!res.ok) throw new Error('Gagal update kandidat');
+  return res.json();
+}
+
+export async function deleteCandidate(id: number) {
+  const res = await fetch(`/api/candidates/${id}`, {
+    method: 'DELETE',
+  });
+
+  if (!res.ok) throw new Error('Gagal menghapus kandidat');
+  return res.json();
+}

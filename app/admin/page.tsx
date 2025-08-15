@@ -1,42 +1,36 @@
-import { getCandidates } from '@/app/services/candidates';
-import { CandidateWithUrl } from '../types/candidate';
-import Link from 'next/link';
+'use client';
 
-export default async function AdminPage() {
-  const candidates: CandidateWithUrl[] = await getCandidates();
+import { useEffect, useState } from 'react';
+import { MemberTable } from '@/components/member-table';
+import AdminFormPage from './form/page';
+import { Separator } from '@/components/ui/separator';
+import { getCandidates } from '../services/candidates';
 
+export default function AdminPage() {
+  const [candidates, setCandidates] = useState([]);
+
+  const fetchCandidates = async () => {
+    const data = await getCandidates();
+    setCandidates(data);
+  };
+
+  useEffect(() => {
+    fetchCandidates();
+  }, []);
   return (
-    <div style={{ padding: 20 }}>
-      <h1>Daftar Kandidat</h1>
-      {/* Tombol tambah kandidat */}
-      <Link href='/form'>
-        <button style={{ marginBottom: '10px' }}>Tambah Kandidat</button>
-      </Link>
-
-      <table border={1} cellPadding={5}>
-        <thead>
-          <tr>
-            <th>Nama</th>
-            <th>Status</th>
-            <th>Pesan</th>
-            <th>URL Screen</th>
-          </tr>
-        </thead>
-        <tbody>
-          {candidates.map((c) => (
-            <tr key={c.id}>
-              <td>{c.name}</td>
-              <td>{c.status}</td>
-              <td>{c.message}</td>
-              <td>
-                <a href={c.screenUrl} target='_blank' rel='noopener noreferrer'>
-                  {c.screenUrl}
-                </a>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className='bg-muted flex min-h-svh flex-col items-center justify-center p-6 md:p-10'>
+      <div className='w-full max-w-sm md:max-w-3xl'>
+        <div className='mb-5'>
+          <AdminFormPage onSuccess={fetchCandidates} />
+        </div>
+        <Separator className='mb-5' />
+        <div>
+          <MemberTable
+            candidates={candidates}
+            onDeleteSuccess={fetchCandidates}
+          />
+        </div>
+      </div>
     </div>
   );
 }

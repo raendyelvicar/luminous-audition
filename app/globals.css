@@ -120,3 +120,35 @@
     @apply bg-background text-foreground;
   }
 }
+
+.logo-loader {
+  position: fixed;
+  inset: 0; /* full screen */
+  background: lab(100% 0 0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.logo-wrapper {
+  border-radius: 50%;
+  padding: 20px;
+  background: lab(100% 0 0);
+  box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.2);
+  animation: pulseLogo 1.5s infinite;
+}
+
+@keyframes pulseLogo {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.2);
+  }
+  100% {
+    box-shadow: 0 0 0 40px rgba(0, 0, 0, 0);
+  }
+}
+
+.logo-img {
+  display: block;
+  border-radius: 50%;
+}
