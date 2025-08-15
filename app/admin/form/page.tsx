@@ -33,7 +33,7 @@ const formSchema = z.object({
 export default function AdminFormPage({
   onSuccess,
 }: {
-  onSuccess: () => void;
+  onSuccess: VoidFunction;
 }) {
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
