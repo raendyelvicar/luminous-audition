@@ -4,9 +4,10 @@ const prisma = new PrismaClient();
 
 export async function GET(
   request: Request,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
-  const name = params.slug.replace(/-/g, ' ');
+  const { slug } = await params; // ✅ harus di-`await`
+  const name = slug.replace(/-/g, ' ');
 
   const candidate = await prisma.candidate.findFirst({
     where: { name },
@@ -22,9 +23,9 @@ export async function GET(
 }
 export async function PUT(
   request: Request,
-  { params }: { params: { slug: string } } // id tetap string
+  { params }: { params: Promise<{ slug: string }> } // id tetap string
 ) {
-  const { slug } = params;
+  const { slug } = await params; // ✅ harus di-`await`
   const body = await request.json();
   const { name, status, message } = body;
 
@@ -53,7 +54,7 @@ export async function DELETE(
       where: { id: Number(slug) },
     });
     return Response.json(response);
-  } catch (err) {
+  } catch {
     return new Response(JSON.stringify({ error: 'Delete failed' }), {
       status: 500,
     });

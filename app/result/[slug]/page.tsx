@@ -6,9 +6,10 @@ const prisma = new PrismaClient();
 export default async function CandidateDetailPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const name = params.slug.replace(/-/g, ' ');
+  const { slug } = await params;
+  const name = slug.replace(/-/g, ' ');
 
   const candidate = await prisma.candidate.findFirst({
     where: { name },

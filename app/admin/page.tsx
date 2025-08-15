@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { MemberTable } from '@/components/member-table';
-import AdminFormPage from './form/page';
 import { Separator } from '@/components/ui/separator';
 import { getCandidates } from '../services/candidates';
+import AdminFormPage from '@/components/admin-form';
 
 export default function AdminPage() {
   const [candidates, setCandidates] = useState([]);
