@@ -1,5 +1,5 @@
 import { CandidateWithUrl } from '@/app/types/candidate';
-import { PrismaClient } from '@prisma/client';
+import { Candidate, PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -10,10 +10,12 @@ export async function GET() {
     orderBy: { createdAt: 'desc' },
   });
 
-  const candidatesWithUrl: CandidateWithUrl[] = candidates.map((c) => ({
-    ...c,
-    screenUrl: `${baseUrl}?for=${encodeURIComponent(c.name)}`,
-  }));
+  const candidatesWithUrl: CandidateWithUrl[] = candidates.map(
+    (c: Candidate) => ({
+      ...c,
+      screenUrl: `${baseUrl}?for=${encodeURIComponent(c.name)}`,
+    })
+  );
 
   return Response.json(candidatesWithUrl);
 }
